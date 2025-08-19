@@ -7,7 +7,12 @@
     <UserSecretsId>77836a73-e60b-494f-936e-f64c28359777</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	<PreserveCompilationContext>true</PreserveCompilationContext>
+	<ApplicationIcon>Media\32_ico_no_fon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Media\32_ico_no_fon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.18" />

@@ -17,8 +17,15 @@
 dotnet run --project AdRegionService
 ```
 
-> 👉 API будет доступен по адресу: http://localhost:7020 \
-> 👉 Swagger UI: http://localhost:7020/swagger
+- Debug
+
+  > 👉 API будет доступен по адресу: http://localhost:5000 \
+  > 👉 Swagger UI: http://localhost:5000/swagger
+
+- Release
+
+  > 👉 API будет доступен по адресу: https://localhost:5001 \
+  > 👉 Swagger UI: https://localhost:5001/swagger
 
 - API
 

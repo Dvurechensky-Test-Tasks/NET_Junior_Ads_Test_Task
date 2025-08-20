@@ -44,7 +44,7 @@ jobs:
           cd AdRegionService/AdRegionService/     # путь к docker-compose.yml
           docker-compose build
           for service in $(docker-compose config --services); do
-            IMAGE_TAG=$(echo "${{ env.REGISTRY }}/${{ github.repository }}/$service:latest" | tr '[:upper:]' '[:lower:]')
-            docker tag ${service}:latest $IMAGE_TAG
+            IMAGE_TAG=${{ env.REGISTRY }}/${{ github.repository }}/adservice:latest
+            docker tag adservice:latest $IMAGE_TAG
             docker push $IMAGE_TAG
           done

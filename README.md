@@ -188,6 +188,15 @@ GET /api/search?location=/ru/svrd
 
 ---
 
+## 🛠 CI/CD
+
+- Автоматическая сборка Docker-образа при пуше в `main`.
+- Публикация образа в GitHub Container Registry (`ghcr.io`).
+- Сборка и пуш всех сервисов через Docker Compose.
+- Минимальные проверки через `dotnet build` и `dotnet test`.
+
+---
+
 ## 🔹 Контейнер Docker
 
 > Генерация сертификата
@@ -205,5 +214,21 @@ docker-compose up --build
 - Адрес сервера после запуска в контейнере:
   - `http://localhost:5411/swagger/index.html`
   - `https://localhost:5412/swagger/index.html`
+
+### Использование контейнера в Github
+
+> Загрузка
+
+```sh
+docker pull ghcr.io/dvurechensky/effectivemobile_test_task/adservice:latest
+```
+
+> Запуск напрямую, пробрасывая порт
+
+```sh
+docker run -it --rm -p 5411:5411 ghcr.io/dvurechensky/effectivemobile_test_task/adservice:latest
+```
+
+> После запуска можно проверить: `http://localhost:5411/swagger`
 
 <p align="center">✨Dvurechensky✨</p>

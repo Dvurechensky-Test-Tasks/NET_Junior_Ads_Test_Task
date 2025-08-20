@@ -1,0 +1,50 @@
+name: Docker Compose CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  docker-compose:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Установка Docker Compose v2
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.23.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose version
+
+      # Вход в GitHub Container Registry
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Сборка и пуш контейнеров через docker-compose
+      - name: Build and push with docker-compose
+        run: |
+          cd AdRegionService/AdRegionService/     # путь к docker-compose.yml
+          docker-compose build
+          # пушим все сервисы по тегам
+          for service in $(docker-compose config --services); do
+            IMAGE_TAG=${{ env.REGISTRY }}/${{ github.repository }}/$service:latest
+            docker tag ${service}_service $IMAGE_TAG
+            docker push $IMAGE_TAG
+          done

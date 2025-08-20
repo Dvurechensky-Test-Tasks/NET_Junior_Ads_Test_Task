@@ -41,10 +41,10 @@ jobs:
       - name: Build and push with docker-compose
         if: ${{ github.event_name != 'pull_request' }}
         run: |
-          cd AdRegionService/AdRegionService/     # путь к docker-compose.yml
+          cd AdRegionService/AdRegionService/  # путь к docker-compose.yml
           docker-compose build
           for service in $(docker-compose config --services); do
-            IMAGE_TAG=${{ env.REGISTRY }}/${{ github.repository }}/adservice:latest
-            docker tag adservice:latest $IMAGE_TAG
+            IMAGE_TAG=${{ env.REGISTRY }}/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/$service:latest
+            docker tag ${service}:latest $IMAGE_TAG
             docker push $IMAGE_TAG
           done

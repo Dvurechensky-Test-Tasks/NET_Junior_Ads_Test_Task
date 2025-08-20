@@ -1,0 +1,19 @@
+﻿version: '3.9'
+services:
+  adservice:
+    build: .
+    container_name: adservice
+    expose:
+      - "5411"
+
+  nginx:
+    image: nginx:latest
+    container_name: adnginx
+    ports:
+      - "5411:80"   
+      - "5412:443"     
+    volumes:
+      - ./Configs/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./Configs/Certs:/etc/nginx/certs:ro
+    depends_on:
+      - adservice

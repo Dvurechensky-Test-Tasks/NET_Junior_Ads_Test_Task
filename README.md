@@ -19,13 +19,13 @@ dotnet run --project AdRegionService
 
 - Debug
 
-  > 👉 API будет доступен по адресу: http://localhost:5000 \
-  > 👉 Swagger UI: http://localhost:5000/swagger
+  > 👉 API будет доступен по адресу: http://localhost:5411 \
+  > 👉 Swagger UI: http://localhost:5411/swagger
 
 - Release
 
-  > 👉 API будет доступен по адресу: https://localhost:5001 \
-  > 👉 Swagger UI: https://localhost:5001/swagger
+  > 👉 API будет доступен по адресу: http://localhost:5411 \
+  > 👉 Swagger UI: http://localhost:5411/swagger
 
 - API
 
@@ -187,5 +187,21 @@ GET /api/search?location=/ru/svrd
 - Команда запуска: `dotnet test`
 
 ---
+
+## Контейнер Docker
+
+> Генерация сертификата
+
+```ps1
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout key.pem -out cert.pem -subj "/CN=localhost"
+```
+
+> Запуск контейнера
+
+```ps1
+docker-compose up --build
+```
+
+- Адрес сервера после запуска в контейнере: `https://localhost:5412/swagger/index.html`
 
 <p align="center">✨Dvurechensky✨</p>

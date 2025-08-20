@@ -1,7 +1,10 @@
 ﻿version: '3.9'
 services:
   adservice:
-    build: .
+    build: 
+        context: .
+        dockerfile: Dockerfile
+    image: adservice:latest 
     container_name: adservice
     expose:
       - "5411"

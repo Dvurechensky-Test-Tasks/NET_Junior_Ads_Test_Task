@@ -188,7 +188,7 @@ GET /api/search?location=/ru/svrd
 
 ---
 
-## Контейнер Docker
+## 🔹 Контейнер Docker
 
 > Генерация сертификата
 
@@ -202,6 +202,8 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout key.pem -out cert.pe
 docker-compose up --build
 ```
 
-- Адрес сервера после запуска в контейнере: `https://localhost:5412/swagger/index.html`
+- Адрес сервера после запуска в контейнере:
+  - `http://localhost:5411/swagger/index.html`
+  - `https://localhost:5412/swagger/index.html`
 
 <p align="center">✨Dvurechensky✨</p>

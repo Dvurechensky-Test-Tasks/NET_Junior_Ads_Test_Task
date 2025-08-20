@@ -39,12 +39,12 @@ jobs:
 
       # Сборка и пуш контейнеров через docker-compose
       - name: Build and push with docker-compose
+        if: ${{ github.event_name != 'pull_request' }}
         run: |
           cd AdRegionService/AdRegionService/     # путь к docker-compose.yml
           docker-compose build
-          # пушим все сервисы по тегам
           for service in $(docker-compose config --services); do
-            IMAGE_TAG=${{ env.REGISTRY }}/${{ github.repository }}/$service:latest
-            docker tag ${service}_service $IMAGE_TAG
+            IMAGE_TAG=$(echo "${{ env.REGISTRY }}/${{ github.repository }}/$service:latest" | tr '[:upper:]' '[:lower:]')
+            docker tag ${service}:latest $IMAGE_TAG
             docker push $IMAGE_TAG
           done

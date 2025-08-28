@@ -1,6 +1,6 @@
 <p align="center">✨Dvurechensky✨</p>
 
-<h1 align="center"> AdPlatformService - Тестовое задание 📄 компании `Effective Mobile` </h1>
+<h1 align="center"> AdPlatformService - Тестовое задание 📄 для Junior `.NET` </h1>
 
 **AdPlatformService** — высокопроизводительный in-memory веб-сервис для хранения и поиска рекламных площадок по локациям.
 
@@ -239,13 +239,13 @@ docker-compose up --build
 > Загрузка
 
 ```sh
-docker pull ghcr.io/dvurechensky/effectivemobile_test_task/adservice:latest
+docker pull ghcr.io/dvurechensky/net_junior_ads_test_task/adservice:latest
 ```
 
 > Запуск напрямую, пробрасывая порт
 
 ```sh
-docker run -it --rm -p 5411:5411 ghcr.io/dvurechensky/effectivemobile_test_task/adservice:latest
+docker run -it --rm -p 5411:5411 ghcr.io/dvurechensky/net_junior_ads_test_task/adservice:latest
 ```
 
 > После запуска можно проверить: `http://localhost:5411/swagger`

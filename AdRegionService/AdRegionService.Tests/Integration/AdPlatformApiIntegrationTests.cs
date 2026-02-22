@@ -2,8 +2,8 @@
  * Author: Nikolay Dvurechensky
  * Site: https://sites.google.com/view/dvurechensky
  * Gmail: dvurechenskysoft@gmail.com
- * Last Updated: 21 февраля 2026 06:50:21
- * Version: 1.0.199
+ * Last Updated: 22 февраля 2026 13:30:26
+ * Version: 1.0.200
  */
 
 using System.Net.Http.Headers;

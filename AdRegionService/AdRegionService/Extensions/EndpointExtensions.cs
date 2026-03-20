@@ -2,8 +2,8 @@
  * Author: Nikolay Dvurechensky
  * Site: https://sites.google.com/view/dvurechensky
  * Gmail: dvurechenskysoft@gmail.com
- * Last Updated: 19 марта 2026 06:50:20
- * Version: 1.0.224
+ * Last Updated: 20 марта 2026 06:50:20
+ * Version: 1.0.225
  */
 
 using AdRegionService.Endpoints;

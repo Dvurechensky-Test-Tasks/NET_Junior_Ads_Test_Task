@@ -2,8 +2,8 @@
  * Author: Nikolay Dvurechensky
  * Site: https://dvurechensky.pro/
  * Gmail: dvurechenskysoft@gmail.com
- * Last Updated: 23 марта 2026 13:10:04
- * Version: 1.0.229
+ * Last Updated: 24 марта 2026 08:52:31
+ * Version: 1.0.230
  */
 
 namespace AdRegionService.Models

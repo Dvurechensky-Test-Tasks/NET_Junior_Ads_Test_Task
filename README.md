@@ -1,55 +1,86 @@
 <p align="center">✨Dvurechensky✨</p>
 
-<h1 align="center"> AdPlatformService - Тестовое задание 📄 для Junior `.NET` </h1>
+<h1 align="center"> AdPlatformService - Junior .NET Test Task 📄 </h1>
 
-**AdPlatformService** — высокопроизводительный in-memory веб-сервис для хранения и поиска рекламных площадок по локациям.
+<div align="center" style="margin: 20px 0; padding: 10px; background: #1c1917; border-radius: 10px;">
+  <strong>🌐 Language: </strong>
+  
+  <a href="./README.ru.md" style="color: #F5F752; margin: 0 10px;">
+    🇷🇺 Russian
+  </a>
+  | 
+  <span style="color: #0891b2; margin: 0 10px;">
+    ✅ 🇺🇸 English (current)
+  </span>
+</div>
 
-📄 Документация по тестовому заданию доступна также в PDF: [TASK.NET.pdf](docs/TASK.NET.pdf)\
-📄 Тестовый файл с входными данными: [test_input_data.txt](docs/test_input_data.txt)
+---
+
+**AdPlatformService** is a high-performance in-memory web service for storing and searching advertising platforms by location.
+
+📄 Task documentation is also available in PDF: [TASK.NET.pdf](docs/TASK.NET.pdf)  
+📄 Test input file: [test_input_data.txt](docs/test_input_data.txt)
 
 <img src="https://github.com/jrohitofficial/jrohitofficial/blob/master/2nd%20arrow.gif?raw=true">
 
-# ⭐ Оглавление
+# ⭐ Table of Contents
 
-- [⭐ Оглавление](#-оглавление)
-  - [🚀 Запуск](#-запуск)
-  - [✨ Возможности](#-возможности)
-  - [🔹 Основной функционал](#-основной-функционал)
-    - [1. **Загрузка рекламных площадок из файла**](#1-загрузка-рекламных-площадок-из-файла)
-      - [Ключевые особенности](#ключевые-особенности)
-      - [Пример формата файла](#пример-формата-файла)
-    - [2. **Поиск рекламных площадок по локации**](#2-поиск-рекламных-площадок-по-локации)
-  - [🔹 Технический подход](#-технический-подход)
-  - [🔹 Преимущества](#-преимущества)
-  - [🔹 Тестирование](#-тестирование)
+- [⭐ Table of Contents](#-table-of-contents)
+  - [🚀 Run](#-run)
+    - [Start](#start)
+    - [Debug](#debug)
+    - [Release](#release)
+  - [API](#api)
+  - [✨ Features](#-features)
+  - [🔹 Core Functionality](#-core-functionality)
+    - [1. Loading platforms from file](#1-loading-platforms-from-file)
+      - [Key Features](#key-features)
+      - [Example file format](#example-file-format)
+    - [2. Search by location](#2-search-by-location)
+  - [🔹 Technical Approach](#-technical-approach)
+    - [Immutable Collections](#immutable-collections)
+    - [Hierarchical Index](#hierarchical-index)
+    - [Logging](#logging)
+    - [Fault Tolerance](#fault-tolerance)
+    - [Set-based Search](#set-based-search)
+  - [🔹 Advantages](#-advantages)
+  - [🔹 Testing](#-testing)
   - [🛠 CI/CD](#-cicd)
-  - [🔹 Контейнер Docker](#-контейнер-docker)
-    - [Использование контейнера в Github](#использование-контейнера-в-github)
+  - [🔹 Docker](#-docker)
+    - [Generate certificate](#generate-certificate)
+    - [Run container](#run-container)
+    - [Access](#access)
+    - [Pull image](#pull-image)
+    - [Run](#run)
 
 <img src="https://github.com/jrohitofficial/jrohitofficial/blob/master/2nd%20arrow.gif?raw=true">
 
-## 🚀 Запуск
+---
 
-- Старт
+## 🚀 Run
+
+### Start
 
 ```bash
 dotnet run --project AdRegionService
 ```
 
-- Debug
+### Debug
 
-  > 👉 API будет доступен по адресу: http://localhost:5411 \
-  > 👉 Swagger UI: http://localhost:5411/swagger
+> 👉 API: [http://localhost:5411](http://localhost:5411)
+> 👉 Swagger UI: [http://localhost:5411/swagger](http://localhost:5411/swagger)
 
-- Release
+### Release
 
-  > 👉 API будет доступен по адресу: http://localhost:5411 \
-  > 👉 Swagger UI: http://localhost:5411/swagger
+> 👉 API: [http://localhost:5411](http://localhost:5411)
+> 👉 Swagger UI: [http://localhost:5411/swagger](http://localhost:5411/swagger)
 
-- API
+---
 
-<details close>
-<summary>Раскрыть подробности API</summary>
+## API
+
+<details>
+<summary>Show API details</summary>
 
 ```http
 POST /api/load
@@ -72,9 +103,9 @@ GET /api/search?location=/ru/svrd
 
 ```json
 [
-	{ "name": "Крутая реклама", "locations": ["/ru/svrd"] },
+	{ "name": "Cool Ads", "locations": ["/ru/svrd"] },
 	{
-		"name": "Ревдинский рабочий",
+		"name": "Revdinsky Worker",
 		"locations": ["/ru/svrd/revda", "/ru/svrd/pervik"]
 	}
 ]
@@ -84,170 +115,193 @@ GET /api/search?location=/ru/svrd
 
 ---
 
-## ✨ Возможности
+## ✨ Features
 
-- 📂 Загрузка списка рекламных площадок из файла (`Stream`).
-- ⚡ Хранение в **Immutable коллекциях** для потокобезопасности.
-- 📊 Подсчёт статистики загрузки (`загружено / пропущено`).
-- 🔍 Поиск площадок по иерархическим локациям:
-  - `/loc1` найдёт все площадки по этому уровню.
-  - `/loc1/loc2` учитывает и `/loc1`.
-- 🛡 Обработка ошибок:
-  - `OperationCanceledException` (отмена загрузки).
-  - `OutOfMemoryException` (слишком большие файлы).
-  - Общие ошибки логируются, состояние не портится.
+- 📂 Load advertising platforms from file (`Stream`)
+- ⚡ In-memory storage using **immutable collections**
+- 📊 Load statistics (`loaded / skipped`)
+- 🔍 Hierarchical location search:
+  - `/loc1` matches all platforms under this level
+  - `/loc1/loc2` also includes `/loc1`
 
-## 🔹 Основной функционал
+- 🛡 Error handling:
+  - `OperationCanceledException`
+  - `OutOfMemoryException`
+  - General errors are logged, state remains consistent
 
-### 1. **Загрузка рекламных площадок из файла**
+---
 
-- Метод `LoadFromStreamAsync(Stream stream, CancellationToken cancellationToken = default)` загружает данные о рекламных площадках из текстового потока.  
-  При успешной загрузке обновляется текущее состояние сервиса (список платформ и индекс по локациям).  
-  Если загрузка не удалась, **старые данные сохраняются**.
+## 🔹 Core Functionality
 
-#### Ключевые особенности
+### 1. Loading platforms from file
 
-- ✅ **Принимает поток** (`Stream`) — можно загружать как локальные файлы, так и данные из сети.
-- ✅ **Игнорирует некорректные строки**:
-  - пустые строки;
-  - строки без разделителя `:`;
-  - пустое имя площадки;
-  - отсутствие валидных локаций.
-- ✅ **Индексирует локации**  
-  Каждая площадка привязывается к своим локациям, которые складываются в `ImmutableDictionary<string, ImmutableHashSet<AdPlatform>>`.
-- ✅ **Статистика загрузки**  
-  Сохраняется количество загруженных и пропущенных строк (`LoadStats`).
-- ✅ **Логирование прогресса**  
-  Каждые `100 000` строк выводится лог «Обработано N строк…».
-- ✅ **Защита от ошибок**
-  - `OperationCanceledException` → корректная отмена загрузки;
-  - `OutOfMemoryException` → логируется, состояние не меняется;
-  - другие ошибки → логируются, состояние не меняется.
+Method:
 
-#### Пример формата файла
+```csharp
+LoadFromStreamAsync(Stream stream, CancellationToken cancellationToken = default)
+```
+
+#### Key Features
+
+- ✅ Accepts `Stream` (supports files and network sources)
+- ✅ Ignores invalid lines:
+  - empty lines
+  - missing `:`
+  - empty platform name
+  - no valid locations
+
+- ✅ Location indexing
+  Stored in:
+
+```csharp
+ImmutableDictionary<string, ImmutableHashSet<AdPlatform>>
+```
+
+- ✅ Load statistics (`LoadStats`)
+- ✅ Progress logging every 100,000 lines
+- ✅ Error resilience:
+  - keeps previous state on failure
+  - logs all exceptions
+
+#### Example file format
 
 ```txt
-Яндекс.Директ:/ru
-Ревдинский рабочий:/ru/svrd/revda,/ru/svrd/pervik
-Газета уральских москвичей:/ru/msk,/ru/permobl,/ru/chelobl
-Крутая реклама:/ru/svrd
+Yandex.Direct:/ru
+Revdinsky Worker:/ru/svrd/revda,/ru/svrd/pervik
+Ural Moscow Newspaper:/ru/msk,/ru/permobl,/ru/chelobl
+Cool Ads:/ru/svrd
 ```
 
 ---
 
-### 2. **Поиск рекламных площадок по локации**
+### 2. Search by location
 
-- ✅ Метод `Search(string location)` возвращает все площадки, совпадающие с заданной локацией.
-- ✅ Используется индекс по локациям для мгновенного поиска.
-- ✅ Поддержка частичных совпадений в имени и локациях.
-- ✅ Возвращает `IEnumerable<AdPlatform>` без лишнего копирования данных.
-- ✅ Потокобезопасный и защищён от битых объектов (`null Name` или `null Locations`).
-- ✅ Комфортно работает с `_platforms` до 1–2 млн элементов; для >10 млн элементов.
-- ⚡ При росте >10 млн площадок или >1–2 GB данных потребуется переход на внешние решения (например, PostgreSQL + полнотекстовый поиск или специализированные индексы).
+- ✅ Method: `Search(string location)`
+- ✅ Uses indexed lookup (no full scan)
+- ✅ Supports hierarchical matching
+- ✅ Returns `IEnumerable<AdPlatform>`
+- ✅ Thread-safe
+- ⚡ Efficient up to:
+  - 1–2 million entries
+  - 100–500 MB data
 
----
-
-## 🔹 Технический подход
-
-- **Immutable коллекции** (`ImmutableArray`, `ImmutableDictionary`, `ImmutableHashSet`)
-
-  - После загрузки данные фиксируются в неизменяемых структурах.
-  - Это обеспечивает потокобезопасность: поиск можно выполнять из разных потоков без блокировок.
-
-- **Индекс по локациям с иерархией**
-
-  - Локации индексируются в `ImmutableDictionary<string, ImmutableHashSet<AdPlatform>>`.
-  - Поиск учитывает все уровни иерархии: запрос `/a/b/c` проверяет `/a`, `/a/b`, `/a/b/c`.
-
-- **Логирование через ILogger**
-
-  - Каждые 100 000 строк загрузки выводится прогресс.
-  - Логируются ошибки (`OutOfMemoryException`, `OperationCanceledException`, общие исключения).
-  - Логи можно подключить к системе мониторинга (например, Seq, Kibana, Zabbix).
-
-- **Устойчивость к ошибкам**
-
-  - Некорректные строки файла игнорируются.
-  - Если загрузка не удалась, предыдущее состояние (`_platforms` и индекс) сохраняется.
-  - Поиск никогда не кидает исключения наружу, при ошибке возвращается пустой результат.
-
-- **Поиск через объединение множеств**
-
-  - Для найденных уровней локации собирается `HashSet<AdPlatform>`.
-  - Дубли платформ автоматически исключаются.
-  - Возврат результата происходит сразу как `IEnumerable<AdPlatform>`.
+> For >10M entries → consider external storage (PostgreSQL, full-text search, etc.)
 
 ---
 
-## 🔹 Преимущества
+## 🔹 Technical Approach
 
-- ⚡ **Высокая производительность загрузки и поиска**  
-  Оптимизировано для работы с файлами до 1–2 млн строк (100–500 MB).  
-  Индексация по локациям обеспечивает быстрый поиск без полного перебора.
+### Immutable Collections
 
-- 🛡 **Устойчивость и надёжность**  
-  Некорректные строки автоматически игнорируются.  
-  При ошибке загрузки текущее состояние не теряется.  
-  Поиск никогда не выбрасывает исключения наружу.
+- `ImmutableArray`
+- `ImmutableDictionary`
+- `ImmutableHashSet`
 
-- 🔗 **Простая интеграция с REST API**  
-  Логика сервиса изолирована, endpoints легко строятся на её основе (`/api/load`, `/api/search`).
-
-- 🧵 **Готовность к многопоточности**  
-  Использование `ImmutableArray` и `ImmutableDictionary` гарантирует потокобезопасность без явных блокировок.  
-  Несколько запросов поиска могут выполняться одновременно.
+➡️ Thread-safe without locks
 
 ---
 
-## 🔹 Тестирование
+### Hierarchical Index
 
-- Используются модульные тесты (xUnit) для проверки корректности поиска и индексации.
-- Покрытие включает: загрузку данных, поиск по названию и локациям, работу с пустыми и некорректными входными данными.
-- Команда запуска: `dotnet test`
+Search `/a/b/c` → checks:
+
+- `/a`
+- `/a/b`
+- `/a/b/c`
+
+---
+
+### Logging
+
+- `ILogger`
+- Progress logging
+- Error tracking
+- Ready for integration (Seq, Kibana, etc.)
+
+---
+
+### Fault Tolerance
+
+- Invalid data is skipped
+- State is preserved on failure
+- Search never throws exceptions
+
+---
+
+### Set-based Search
+
+- Uses `HashSet<AdPlatform>`
+- Removes duplicates automatically
+- Returns lightweight enumerable
+
+---
+
+## 🔹 Advantages
+
+- ⚡ High performance (1–2M entries)
+- 🛡 Robust error handling
+- 🔗 Easy REST integration
+- 🧵 Thread-safe architecture
+
+---
+
+## 🔹 Testing
+
+- xUnit tests
+- Covers:
+  - loading
+  - search
+  - edge cases
+
+- Run:
+
+```bash
+dotnet test
+```
 
 ---
 
 ## 🛠 CI/CD
 
-- Автоматическая сборка Docker-образа при пуше в `main`.
-- Публикация образа в GitHub Container Registry (`ghcr.io`).
-- Сборка и пуш всех сервисов через Docker Compose.
-- Минимальные проверки через `dotnet build` и `dotnet test`.
+- Docker build on push to `main`
+- Publish to GitHub Container Registry
+- `dotnet build` + `dotnet test`
 
 ---
 
-## 🔹 Контейнер Docker
+## 🔹 Docker
 
-> Генерация сертификата
+### Generate certificate
 
-```ps1
+```bash
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout key.pem -out cert.pem -subj "/CN=localhost"
 ```
 
-> Запуск контейнера
+### Run container
 
-```ps1
+```bash
 docker-compose up --build
 ```
 
-- Адрес сервера после запуска в контейнере:
-  - `http://localhost:5411/swagger/index.html`
-  - `https://localhost:5412/swagger/index.html`
+### Access
 
-### Использование контейнера в Github
+- [http://localhost:5411/swagger/index.html](http://localhost:5411/swagger/index.html)
+- [https://localhost:5412/swagger/index.html](https://localhost:5412/swagger/index.html)
 
-> Загрузка
+---
 
-```sh
+### Pull image
+
+```bash
 docker pull ghcr.io/dvurechensky/net_junior_ads_test_task/adservice:latest
 ```
 
-> Запуск напрямую, пробрасывая порт
+### Run
 
-```sh
+```bash
 docker run -it --rm -p 5411:5411 ghcr.io/dvurechensky/net_junior_ads_test_task/adservice:latest
 ```
 
-> После запуска можно проверить: `http://localhost:5411/swagger`
+---
 
 <p align="center">✨Dvurechensky✨</p>
